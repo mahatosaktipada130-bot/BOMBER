@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
 # Render ke environment variable se token uthayega
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "BOT_TOKEN")
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -18,18 +18,14 @@ async def check_firebase(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
     
     # Regex pattern to find all Firebase Realtime Database URLs in the text
-    # Yeh pattern 'https://[name]-default-rtdb.firebaseio.com' ya kisi bhi firebaseio.com link ko dhoond lega
     firebase_pattern = r'https?://[a-zA-Z0-9_-]+\.firebaseio\.com'
     found_urls = re.findall(firebase_pattern, text)
     
-    # Agar koi bhi URL nahi mila
     if not found_urls:
         await update.message.reply_text("❌ Kripya koi valid Firebase Realtime Database URL bhejein.")
         return
 
-    # Duplicate URLs ko hatane ke liye set ka use karenge taaki ek link do baar scan na ho
     unique_urls = list(dict.fromkeys(found_urls))
-    
     await update.message.reply_text(f"⏳ Scanning {len(unique_urls)} Firebase URL(s)...")
 
     for url in unique_urls:
@@ -66,7 +62,6 @@ async def check_firebase(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     online_devices += 1
                         offline_devices = total_devices - online_devices
 
-            # Normal text format taaki aasaani se copy ho sake
             report = f"🟢 Online devices     : {online_devices}\n🔴 Offline devices    : {offline_devices}\n\n✅ {url}"
             await update.message.reply_text(report)
 
