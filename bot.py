@@ -1,11 +1,26 @@
-import datetime
 import os
 import re
 import requests
+from threading import Thread
+from flask import Flask
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
-# Render ke environment variable se token uthayega
+# --- Dummy Flask Server (Render ke port requirement ke liye) ---
+app_flask = Flask('')
+
+@app_flask.route('/')
+def home():
+    return "Bot is alive and running!"
+
+def run_flask():
+    app_flask.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+
+def keep_alive():
+    t = Thread(target=run_flask)
+    t.start()
+# -------------------------------------------------------------
+
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -73,6 +88,9 @@ def main():
     if not BOT_TOKEN:
         print("❌ Error: BOT_TOKEN is missing!")
         return
+
+    # Flask server start karega background mein port open rakhne ke liye
+    keep_alive()
 
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
