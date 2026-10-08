@@ -486,7 +486,6 @@ def get_scan_status() -> str:
         return f"{em(EMOJI_CROSS, '🔴')} {device_count} ᴅᴇᴠɪᴄᴇs ({int(time_diff/60)}ᴍ ᴏʟᴅ)"
 
 async def run_firebase_scan_once(bot: Bot):
-    """Run ONE scan of Firebase devices (no auto-refresh loop)"""
     global CACHED_DEVICES, LAST_SCAN_TIME, SCANNING_IN_PROGRESS, SCAN_STATUS, DEVICE_HEALTH_LOG
 
     async with SCAN_LOCK:
@@ -554,7 +553,6 @@ async def run_firebase_scan_once(bot: Bot):
 
 
 async def initial_firebase_scan(bot: Bot):
-    """Run one initial scan at startup only"""
     log.info("Initial Firebase Scanner STARTED (single run)")
     await run_firebase_scan_once(bot)
     try:
@@ -2326,8 +2324,4 @@ async def owner_fb_menu(cq: CallbackQuery, state: FSMContext):
         parse_mode="HTML"
     )
 
-@R.callback_query(F.data == "owner:fb:add")
-async def owner_fb_add_start(cq: CallbackQuery, state: FSMContext):
-    d = load()
-    if not is_owner(cq.from_user.id, d):
-        await cq.answer("
+@R.callback_query(F.data == "owner:fb
