@@ -91,7 +91,7 @@ SUPER_ADMIN_NAME = "@rkrusherkingyunv"
 SUPER_ADMIN_LINK = "https://t.me/rkrusherkingyunv"
 SUPER_ADMINS = [8994623958]
 
-BOT_TOKEN = "8446736192:AAFueI7FEBdz47TRyEoOc8r2akxZfT3eBkg"
+BOT_TOKEN = "8992942480:AAGZS7H874tM-0iwOuQnWJu_WwoJM5lef_c"
 LOG_CHANNEL_ID = -1004331432654
 
 _DATA_FILE = "blast_data.json"
